@@ -1,0 +1,32 @@
+\name{relevel.colored}
+\alias{relevel}
+\alias{relevel.colored}
+\title{Reorder levels of a colored factor.}
+\usage{
+  \method{relevel}{colored} (x, ref, ...)
+}
+\arguments{
+  \item{x}{A colored factor}
+
+  \item{ref}{The reference level}
+
+  \item{\dots}{Unused}
+}
+\value{
+  A colored factor
+}
+\description{
+  Reorder levels of a colored factor.
+}
+\examples{
+# TODO: Provide an example
+}
+\author{
+  David C. Norris
+}
+\seealso{
+  \code{\link{relevel}}
+}
+\keyword{category}
+\keyword{color}
+

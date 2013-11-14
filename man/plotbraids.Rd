@@ -1,0 +1,99 @@
+\name{plotbraids}
+\alias{plotbraids}
+\title{plotbraids}
+\usage{
+  plotbraids(formula, data, idvar = "id", stratify = FALSE,
+    steps = 1:3, outside = FALSE, xlab = NULL, ...,
+    x.scales.labels = paste(formula[[2]], steps, sep = "."),
+    x.scales = list(alternating = FALSE, relation = "same",
+                    labels = x.scales.labels,
+                    at = seq(length(steps)) - 0.5),
+    scales = list(x = x.scales, y = list(draw = FALSE, relation = "free")),
+    strip = TRUE,
+    lattice.options = list(axis.padding = list(numeric = 0, factor = 0)))
+}
+\arguments{
+  \item{formula}{A formula of the form \code{trt ~ seq} or
+  \code{trt ~ seq | cond}, where \code{trt} is a treatment
+  factor, \code{seq} is an integer sequence number, and the
+  optional \code{cond} is a conditioning factor used to
+  trellis the braided stream plot. Probably only two-valued
+  conditioning factors will produce visually acceptable
+  plots.}
+
+  \item{data}{A data frame with columns named on the LHS
+  and RHS of argument \code{formula}}
+
+  \item{idvar}{A character vector naming columns of
+  \code{data} that identify multiple records from the same
+  individual, used to reshape \code{data} into wide form}
+
+  \item{stratify}{A logical value, indicating whether
+  whitespace should be introduced to stratify the braids by
+  initial treatment}
+
+  \item{steps}{Which values of the sequence number should
+  be included in the plot. Presently, only vectors of the
+  form \code{1:n} (for some integer \code{n}) are
+  supported.}
+
+  \item{outside}{A logical value determining whether the
+  state labels are to appear outside the panel.}
+
+  \item{xlab}{x-axis label}
+
+  \item{\dots}{Additional arguments passed to delegates}
+
+  \item{x.scales.labels}{Labels for the treatment states}
+
+  \item{x.scales}{Provides a hook for modifying the
+  basically sensible default layout and labeling of the
+  x-axis}
+
+  \item{scales}{Provides a hook for modifying the basically
+  sensible default layout of both x- and y-axes}
+
+  \item{strip}{Allows user to provide a strip function if
+  the default does not suffice}
+
+  \item{lattice.options}{Allows specification of
+  plot-specific lattice options}
+}
+\value{
+  A \code{trellis} plot object
+}
+\description{
+  Braided streams plot for cohort visualization
+}
+\details{
+  Displays 'paths' taken by individuals passing through a
+  sequence of discrete states, such as a sequence of
+  treatments.
+}
+\examples{
+## We demonstrate a simple braided stream plot based on the built-in occupationalStatus data set.
+## It should be noted that the semantics of these data are very slightly at odds with the intended
+## application of the braided stream plot, since the index cases in this data set were the _sons_,
+## rather than the fathers. Thus, although time goes left-to-right in this figure, the streamlines
+## run right-to-left epidemiologically. Notwithstanding this minor technicality, the figure gives
+## a lively, compelling and meaningful visualization of these data.
+## 1. Build a 'wide-form' data set from the table 'occupationalStatus'
+df.wide <- data.frame(status.1=rep(1:8, 8),
+                      status.2=rep(1:8, each=8),
+                      N=as.vector(occupationalStatus))
+df.wide <- df.wide[rep(1:64, times=df.wide$N),-3]
+## 2. Reshape this to the 'long-form' data set expected by 'plotbraids'
+df.long <- reshape(df.wide, varying=paste("status", 1:2, sep="."), direction="long", timevar="gen")
+df.long <- df.long[order(df.long$id),]
+## TODO: Generate appropriate 'class' labels for status.
+## TODO: Use this opportunity to demonstrate meaningful application of a colored factor.
+## 3. Plot the braided stream plot
+plotbraids(status ~ gen, df.long, stratify=TRUE, steps=1:2,
+           outside=TRUE, xlab="Generation",
+           x.scales.labels=c("Father","Son"))
+}
+\author{
+  David C. Norris
+}
+\keyword{hplot}
+

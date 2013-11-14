@@ -1,0 +1,32 @@
+\docType{package}
+\name{VizOR-package}
+\alias{VizOR}
+\alias{VizOR-package}
+\title{Graphical visualization tools for complex observational data (VizOR).
+Package functionality includes individual- and aggregate-level graphics
+depicting patterns of treatment and response in patient registries, and
+a graphical tool for identifying potential for confounding in analyses
+of observational data.}
+\description{
+  \tabular{ll}{ Package: \tab VizOR\cr Type: \tab
+  Package\cr Version: \tab 0.7-9\cr Date: \tab
+  2013-11-14\cr License: \tab GPL (>= 2)\cr LazyLoad: \tab
+  yes\cr } TODO: Provide a general introduction to the
+  package, including an orientation to its most important
+  functions.
+}
+\author{
+  Drew Griffin Levy, PhD \cr Senior Medical Science
+  Director \cr Genentech, Inc.  \cr Evidence Science &
+  Innovation | US Medical Affairs \cr
+  \email{levy.drew@gene.com}
+
+  David C. Norris, MD \cr David Norris Consulting, LLC \cr
+  \email{david@UnusualSolutionsThatWork.com}
+}
+\seealso{
+  \code{\link[Hmisc:Overview]{Hmisc}}
+  \code{\link[rms:rms]{rms}}
+}
+\keyword{package}
+

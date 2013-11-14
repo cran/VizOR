@@ -1,0 +1,115 @@
+\name{timeline}
+\alias{timeline}
+\title{A color-coded treatment time-line, with overlaid events}
+\usage{
+  timeline(figlabel, txs, resp, bsl, ptid = "patnum",
+    condition = TRUE, formula = trt + resp ~ time | patnum,
+    followed = list(from = as.difftime(0, units = "days"),
+    	            to = as.difftime(Inf, units = "days")),
+    tx.start = "start", tx.end = "end",
+    treatment = as.character(formula[[2]][[2]]),
+    response = as.character(formula[[2]][[3]]),
+    time = as.character(formula[[3]][[2]]),
+    timeunit = units(resp[[time]]), caption = NULL,
+    tx.key = key(txs[[treatment]]),
+    resp.key = key(resp[[response]]), cols.rows = c(2, 5),
+    prefix.string = "figs/plot",
+    xlim = c(0, as.double(min(followed$to, max(resp[[time]])), units = timeunit)),
+    xlab = paste("Time (", timeunit, ")", sep = ""),
+    ylab = "",
+    filename = paste(figlabel, "followed", sub("[.]", "_", followed$from),
+                     "-", sub("[.]", "_", followed$to), "y", sep = ""))
+}
+\arguments{
+  \item{figlabel}{A string to be used as a LaTeX figure
+  label}
+
+  \item{txs}{A data frame describing intervals of
+  treatment}
+
+  \item{resp}{A data frame describing treatment response
+  assessments}
+
+  \item{bsl}{A data frame of subject baseline
+  characteristics}
+
+  \item{ptid}{The name of the unique patient identifier
+  (default is "patnum")}
+
+  \item{condition}{An R expression giving a logical
+  condition (a predicate on subject baseline
+  characteristics) used for selecting the subjects to be
+  plotted}
+
+  \item{formula}{A formula of the form
+  \code{trt+resp~time|patnum}, interpreted as "plot
+  treatment and response vs time, by patnum"}
+
+  \item{followed}{A list with difftime components
+  \code{from} and \code{to}, giving the minimum and maximum
+  durations of follow-up for patients to be plotted. This
+  is necessary to prevent the dwarfing of treatment courses
+  for patients with short follow-up when plotted alongside
+  those of patients with extended follow-up}
+
+  \item{tx.start}{name of treatment start date column of
+  \code{txs}}
+
+  \item{tx.end}{name of treatment end date column of
+  \code{txs}}
+
+  \item{treatment}{name of treatment column of \code{txs}}
+
+  \item{response}{name of response column of \code{resp}}
+
+  \item{time}{name of time column of \code{resp}}
+
+  \item{timeunit}{The time unit desired for the horizontal
+  axis}
+
+  \item{caption}{The figure caption may be provided
+  explicitly or (if NULL) constructed automatically}
+
+  \item{tx.key}{The plot legend for treatments}
+
+  \item{resp.key}{The plot legend for responses}
+
+  \item{cols.rows}{Trellis layout as \code{c(ncols,
+  nrows)}}
+
+  \item{prefix.string}{Prefix string (including possibly a
+  directory) for cached plot output}
+
+  \item{xlim}{x-axis limits}
+
+  \item{xlab}{x-axis label}
+
+  \item{ylab}{y-axis label}
+
+  \item{filename}{Filename pattern for cached plot output}
+}
+\description{
+  This individual-level graphic depicts horizontal time
+  intervals of an ongoing treatment course, color-coded by,
+  e.g., agent.  Categorical events which may occur during
+  treatment, such as assessments of response, are
+  annotatated with color-coded arrows.
+}
+\note{
+  TODO: further notes
+}
+\examples{
+## TODO: Provide an example
+## TODO: Document usage. If necessary, include sample data sets in package:VizOR.
+}
+\author{
+  David C. Norris
+}
+\references{
+  TODO: Reference our white paper or pending publication
+}
+\seealso{
+  TODO: List objects to See Also as \code{\link{help}}
+}
+\keyword{hplot}
+

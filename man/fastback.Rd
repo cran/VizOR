@@ -1,0 +1,29 @@
+\name{fastback}
+\alias{fastback}
+\title{fastback}
+\usage{
+  fastback(fit, data, ...)
+}
+\arguments{
+  \item{fit}{A model fit of class \code{rms}}
+
+  \item{data}{The data against which \code{fit} was
+  estimated}
+
+  \item{...}{Other parameters to be passed to
+  \code{fastbw}}
+}
+\value{
+  A fitted model of the same type as \code{fit}, with
+  regressors chosen by stepwise backward regression
+}
+\description{
+  This function serves to \sQuote{complete}
+  \code{rms:fastbw}, such that it converts one fitted model
+  to another, the restricted model.
+}
+\author{
+  David C. Norris
+}
+\keyword{regression}
+

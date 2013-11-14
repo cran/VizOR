@@ -1,0 +1,28 @@
+\name{color.colored}
+\alias{color.colored}
+\title{Returns the vector of colors associated with the factor levels.}
+\usage{
+  \method{color}{colored} (x, ...)
+}
+\arguments{
+  \item{x}{A colored factor}
+
+  \item{\dots}{Additional arguments (unused)}
+}
+\value{
+  A (character) vector of colors, having the same length as
+  x
+}
+\description{
+  Returns the vector of colors associated with the factor
+  levels.
+}
+\author{
+  David C. Norris
+}
+\seealso{
+  \code{\link{colored}}
+}
+\keyword{category}
+\keyword{color}
+

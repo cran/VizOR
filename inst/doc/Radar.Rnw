@@ -1,0 +1,114 @@
+\documentclass[english]{article}
+
+%\VignetteIndexEntry{Trellised Radar Plot: Multidimensional 'Table 1 at-a-glance'}
+\title{Trellised Radar Plot:\\A multidimensional Table 1 `at-a-glance'}
+\author{
+  Drew Griffin Levy, PhD\\
+  Senior Medical Science Director\\
+  Genentech, Inc.\\
+  Evidence Science \& Innovation | US Medical Affairs\\
+  {\tt levy.drew@gene.com}
+}
+
+% Prepared to develop trellised radar/spider/star plots
+
+% ----------------------------------
+% David C. Norris                    
+% David Norris Consulting, LLC       
+% david@UnusualSolutionsThatWork.com 
+% ----------------------------------
+
+\usepackage{Sweave}
+\usepackage{setspace}
+\usepackage{relsize}
+\usepackage{keyval}
+\usepackage{flafter}
+\usepackage{pdflscape}
+\usepackage{longtable}
+\usepackage[pdftex]{color}
+\usepackage{ctable}
+\usepackage{hyperref}
+
+\setlength{\topmargin}{0in}
+\setlength{\headheight}{0.25in}
+\setlength{\headsep}{0in}
+\setlength{\footskip}{0.25in}
+\setlength{\textheight}{9in}
+\begin{document}
+\newcounter{subfigure} % used in multi-page figures
+\SweaveOpts{keep.source=TRUE, echo=FALSE, results=hide, prefix.string=plot}
+\setkeys{Gin}{width=1.0\textwidth}
+\maketitle
+\date{}
+
+\clearpage
+<<Init>>=
+library(rms)
+library(VizOR)
+@
+
+<<PrepareData>>=
+df <- upData(mtcars,
+             cyl=factor(cyl,levels=2*(2:4),labels=paste(2*(2:4),"cyl", sep="-")),
+             am=factor(am,levels=0:1,labels=c("automatic","manual")),
+             gear=factor(gear,levels=3:5,labels=paste(3:5,"speed", sep="-")),
+             ## TODO: Add a region factor?
+             labels=c(
+               mpg="Miles per gallon"
+               ,cyl="Number of cylinders"
+               ,disp="Displacement"
+               ,hp="Gross horsepower"
+               ,drat="Rear axle ratio"
+               ,wt="Weight"
+               ,qsec="1/4 mile time"
+               ,am="Transmission type"
+               ,gear="Number of forward gears"
+               ,carb="Number of carburetors"
+               ),
+             units=c(
+               wt="lb/1000"
+               ,disp="in^3"
+               ,qsec="sec"
+               ),
+             drop='vs' # I have no idea what this poorly documented variable means!
+             )
+@ 
+
+<<Describe, results=tex>>=
+latex(describe(df, descript="Built-in dataset `mtcars'"), file="")
+@ 
+
+<<ColorScheme>>=
+## There may be an excellent opportunity here to develop and demonstrate
+## an approach to colorizing factors.  Each factor employed in the 3-way
+## experimental cross can be given its own color scheme, to be applied
+## automatically when plotting.
+@ 
+
+\clearpage
+<<Table1, results=tex>>=
+## Here, demonstrate a basic "Table 1" which subsequently will appear
+## in the individual panels of the trellised radar plot.
+s <- summary(cyl ~ mpg + disp + hp + drat + wt, method='reverse', data=df)
+options(digits=3)
+latex(s, npct='both', nptc.size='normalsize', file="", label="tbl:Table-1")
+@ 
+
+\begin{figure}
+<<CrossPlot, fig=TRUE>>=
+## Let's keep the overall=TRUE option (which is the default for method='cross'),
+## so that a single summary can be generated and used for many plots.  The marginal
+## factor level should probably be ignored automatically for the overlaid polygons.
+s <- summary(cbind(mpg, disp, hp, drat, wt) ~ cyl + gear + am,
+             method='cross', overall=TRUE, data=df)
+dd <- datadist(df)
+print(radarplot(S ~ cyl | gear*am, data=s, datadist=dd, rescale="range"))
+@ 
+\caption{\label{fig:CrossPlot}{\bf Trellised radar plot.} The top, right-hand corner can be seen to
+  correspond to the `standard Table~1' shown in Table~\ref{tbl:Table-1} above.  The trellis can be
+  seen therefore to produce an augmented or disaggregated Table~1 having several additional
+  dimensions (transmission type and number of gears).}
+\end{figure}
+
+\end{document}
+

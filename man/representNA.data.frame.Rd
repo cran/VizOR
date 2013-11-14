@@ -1,0 +1,25 @@
+\name{representNA.data.frame}
+\alias{representNA.data.frame}
+\title{Apply the \code{representNA} function to all columns of a data frame}
+\usage{
+  representNA.data.frame(df)
+}
+\arguments{
+  \item{df}{The data frame to be 'cleaned up'.}
+}
+\value{
+  Returns a data frame identical to df, with "NA" recoded
+  as NA.
+}
+\description{
+  Replace the string "NA" with R's missing value NA,
+  wherever it appears in the given data frame.
+}
+\examples{
+# TODO: Provide an example
+}
+\author{
+  David C. Norris
+}
+\keyword{manip}
+

@@ -1,0 +1,31 @@
+\name{beNiceToLaTeX}
+\alias{beNiceToLaTeX}
+\title{Sanitize deparsed R expressions for inclusion in LaTeX documents.
+Percent signs and ampersands appearing in R expressions must be escaped for
+inclusion in LaTeX documents.}
+\usage{
+  beNiceToLaTeX(str)
+}
+\arguments{
+  \item{str}{Typically, a deparsed R expression to be
+  included in, e.g., a figure caption in a LaTeX document.}
+}
+\value{
+  A string is returned, with LaTeX-unfriendly characters
+  backslash-escaped.
+}
+\description{
+  Sanitize deparsed R expressions for inclusion in LaTeX
+  documents. Percent signs and ampersands appearing in R
+  expressions must be escaped for inclusion in LaTeX
+  documents.
+}
+\note{
+  This function is a candidate for documentation as
+  package-internal.
+}
+\author{
+  David C. Norris
+}
+\keyword{internal}
+
