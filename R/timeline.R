@@ -5,6 +5,11 @@
 ##' which may occur during treatment, such as assessments of response, are
 ##' annotatated with color-coded arrows.
 ##' 
+##' @importFrom grDevices boxplot.stats dev.off pdf rainbow rgb
+##' @importFrom graphics plot
+##' @importFrom methods is
+##' @importFrom utils capture.output glob2rx modifyList
+##' 
 ##' @param figlabel A string to be used as a LaTeX figure label
 ##' @param txs A data frame describing intervals of treatment
 ##' @param resp A data frame describing treatment response assessments
@@ -46,6 +51,7 @@
 ##' ## TODO: Provide an example
 ##' ## TODO: Document usage. If necessary, include sample data sets in package:VizOR.
 ##' @export timeline
+
 ## Note that there are 3 different column names used here: 'trt', 'resp' and 'time'.
 ## It may be worthwhile to require all of these to be provided in a formula, so that
 ## the data frame columns may be addressed more robustly.  For example, a formula
@@ -64,7 +70,7 @@ timeline <- function(figlabel, txs, resp, bsl, ptid='patnum', condition=TRUE,
            caption=NULL,
            tx.key=key(txs[[treatment]]),
            resp.key=key(resp[[response]]),
-           cols.rows=c(2,5), prefix.string="figs/plot",
+           cols.rows=c(2,5), prefix.string="splot",
            xlim=c(0, as.double(min(followed$to, max(resp[[time]])), units=timeunit)),
            xlab=paste("Time (", timeunit, ")", sep=""), ylab="",
            filename=paste(figlabel, "followed",
@@ -172,13 +178,13 @@ timeline <- function(figlabel, txs, resp, bsl, ptid='patnum', condition=TRUE,
     ## Close output device to write out all the files,
     ## diverting printed output to keep .tex file clean.
     ignore <- capture.output(dev.off())
-    files <- list.files(path="figs",
+    files <- list.files(path=".",
                         pattern=glob2rx(paste("plot", "-", filename, "*.pdf", sep='')))
     cat("\\renewcommand{\\thefigure}{\\arabic{figure}-\\arabic{subfigure}}")
     cat("\\setcounter{subfigure}{1}")
     for(file in files){
       cat("\\begin{figure}\n\n")
-      cat("\\includegraphics{", "figs/", file, "}\n\n", sep="") 
+      cat("\\includegraphics{", file, "}\n\n", sep="") 
       cat("\\caption{\\label{fig:", figlabel, "}{\\bf ", caption, "}}", sep='')
       cat("\\addtocounter{figure}{-1}\n")
       cat("\\addtocounter{subfigure}{1}\n")

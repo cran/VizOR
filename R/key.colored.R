@@ -8,11 +8,10 @@
 ##' @param \dots Additional arguments (unused)
 ##' @return A color key, in the form of a named vector
 ##' @method key colored
-##' @S3method key colored
 ##' @author David C. Norris
 ##' @seealso \code{\link{colored}}
 ##' @keywords category color
-##' 
+##' @export
 key.colored <- function(x, ...){
   key <- attr(x,'colors')
   names(key) <- levels(x)

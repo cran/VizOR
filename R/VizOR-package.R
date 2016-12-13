@@ -7,8 +7,8 @@
 ##' \tabular{ll}{
 ##' Package: \tab VizOR\cr
 ##' Type: \tab Package\cr
-##' Version: \tab 0.7-9\cr
-##' Date: \tab 2013-11-14\cr
+##' Version: \tab 0.8-3\cr
+##' Date: \tab 2014-09-11\cr
 ##' License: \tab GPL (>= 2)\cr
 ##' LazyLoad: \tab yes\cr
 ##' }
@@ -27,7 +27,7 @@
 ##' @author
 ##'   David C. Norris, MD
 ##'   \cr David Norris Consulting, LLC
-##'   \cr \email{david@@UnusualSolutionsThatWork.com}
+##'   \cr \email{david@@dnc-llc.com}
 ##' @seealso \code{\link[Hmisc:Overview]{Hmisc}}
 ##'   \code{\link[rms:rms]{rms}}
 ##' @keywords package

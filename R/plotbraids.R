@@ -14,6 +14,8 @@
 ##' the braids by initial treatment
 ##' @param steps Which values of the sequence number should be included in the plot. Presently, only
 ##' vectors of the form \code{1:n} (for some integer \code{n}) are supported.
+##' @param color.by The name of a factor by which individuals are to be tracked into colored braids.
+##' This may as a special case be one of the seq.<step> factors in the constructed wide data table.
 ##' @param outside A logical value determining whether the state labels are to appear outside the
 ##' panel.
 ##' @param xlab x-axis label
@@ -53,6 +55,7 @@
 ##
 ##' @export plotbraids
 plotbraids <- function(formula, data, idvar="id", stratify=FALSE, steps=1:3,
+                       color.by=paste(formula[[2]],1,sep="."),
                        outside=FALSE, xlab=NULL, ...,
                        x.scales.labels=paste(formula[[2]],steps,sep="."),
                        x.scales=list(
@@ -73,6 +76,16 @@ plotbraids <- function(formula, data, idvar="id", stratify=FALSE, steps=1:3,
     warning("Coercing state variable '", statevar, "' to a colored factor, using arbitrary colors.")
     data[[statevar]] <- colored(data[[statevar]]) # invoked without explicit color.key, 'colored' issues Warning
   }
+  ## Check that 'color.by' is either in names(data) or statevar.<n> for some n in steps
+  if(!(color.by %in% c(names(data), paste(statevar,steps,sep=".")))){
+    warning(c(names(data), paste(statevar,steps,sep=".")))
+    stop(paste("color.by variable '", color.by, "' is not in data frame, nor of form <statevar>.<step>", sep=''))
+  }
+  ## If the color.by column of data is not a colored factor, then convert it to one
+  if(color.by %in% names(data) && !is(data[[color.by]], "colored")){
+    warning("Coercing color.by variable '", color.by, "' to a colored factor, using arbitrary colors.")
+    data[[color.by]] <- colored(data[[color.by]]) # invoked without explicit color.key, 'colored' issues Warning
+  }
   dots <- list(...)
   if (!is.null(lattice.options)) {
     oopt <- lattice.options(lattice.options)
@@ -82,7 +95,7 @@ plotbraids <- function(formula, data, idvar="id", stratify=FALSE, steps=1:3,
                               multiple = FALSE, outer = FALSE, 
                               subscripts = TRUE, drop = TRUE)
   panel <- function(x, y, subscripts, ...)
-    panel.plotbraids(x, y, subscripts, ..., formula=formula, data=data, idvar=idvar, stratify=stratify, steps=steps, outside=outside)
+    panel.plotbraids(x, y, subscripts, ..., formula=formula, data=data, idvar=idvar, stratify=stratify, steps=steps, color.by=color.by, outside=outside)
   if (!is.function(strip)) 
     strip <- eval(strip)
   subscr <- form$subscr

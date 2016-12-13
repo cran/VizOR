@@ -6,7 +6,6 @@
 ##' @param \dots Unused
 ##' @return A colored factor
 ##' @method relevel colored
-##' @S3method relevel colored
 ##' @seealso \code{\link{relevel}}
 ##' @author David C. Norris
 ##' @keywords category color

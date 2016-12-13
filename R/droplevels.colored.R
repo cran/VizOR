@@ -7,8 +7,8 @@
 ##' @param ... further arguments passed to methods
 ##' @return a colored factor with no unused levels
 ##' @method droplevels colored
-##' @S3method droplevels colored
 ##' @author David C. Norris
+##' @export
 droplevels.colored <- function(x, ...){
   color.key <- key(x)
   x <- droplevels.factor(x)

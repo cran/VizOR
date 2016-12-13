@@ -1,6 +1,6 @@
 \documentclass[english]{article}
 
-%\VignetteIndexEntry{Trellised Radar Plot: Multidimensional 'Table 1 at-a-glance'}
+%\VignetteIndexEntry{Confounding Potential Plot}
 \title{Confounding Potential Plot}
 \author{
   Drew Griffin Levy, PhD\\
@@ -16,7 +16,7 @@
 % ----------------------------------
 % David C. Norris                    
 % David Norris Consulting, LLC       
-% david@UnusualSolutionsThatWork.com 
+% david@dnc-llc.com 
 % ----------------------------------
 
 \usepackage{Sweave}

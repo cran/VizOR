@@ -13,19 +13,20 @@
 ##' @param idvar 
 ##' @param stratify 
 ##' @param steps 
+##' @param color.by 
 ##' @return None
 ##' @author David C. Norris
 ##' @seealso \code{\link{plotbraids}}
 ##' @keywords internal hplot
 ##' @export panel.plotbraids
-panel.plotbraids <- function(x, y, subscripts, ..., formula, data, idvar, stratify, steps, outside){
+panel.plotbraids <- function(x, y, subscripts, ..., formula, data, idvar, stratify, steps, color.by, outside){
   statevar <- as.character(formula[[2]]) # Let our formula be of the form
   timevar <- as.character(formula[[3]])  # 'statevar ~ timevar [| condvar]',
   condvar <- tryCatch(as.character(formula[[3]][[3]]), # with optional conditioning variable.
                       error=function(e) NULL)
   if(length(timevar)>1)
     timevar <- timevar[[2]]
-  data.long <- data[subscripts,c(idvar, statevar, timevar)]
+  data.long <- data[subscripts, intersect(names(data),c(idvar, statevar, timevar, color.by))]
   ## Reshape the longitudinal 'data' to wide-form
   data <- reshape(data.long, v.names=statevar, timevar=timevar, idvar=idvar, direction="wide")
   if(any(is.na(data))){
@@ -46,8 +47,10 @@ panel.plotbraids <- function(x, y, subscripts, ..., formula, data, idvar, strati
   lanes <- data.frame(trt=names(tx.key))
   ## Aggregate the data to get a frequency column in place of patnum
   N <- dim(data)[1]
+  ## TODO: Retain in 'data' any 'color.by' column as well (this may or may not be a statevar.<n> column)
+  byvars = intersect(names(data), c(paste(statevar,steps,sep="."),color.by))
   data <- aggregate(list(x=rep(1/N,N)), # TODO: Might it not be clearer to call this 'y', not 'x'?
-                    by=data[,paste(statevar,steps,sep=".")],
+                    by=data[,byvars],
                     FUN=sum)
   last <- dim(data)[1]
   for(i in steps){
@@ -95,7 +98,7 @@ panel.plotbraids <- function(x, y, subscripts, ..., formula, data, idvar, strati
     lanes[,-1] <- lanes[,-1]/max(lanes$x.max)
   }
   data <- data[order(data[[paste(statevar, steps[1], sep=".")]]),]
-  numeric.columns <- -seq(length(steps))
+  numeric.columns <- sapply(data, is.numeric)
   data[,numeric.columns] <- data[,numeric.columns]/max(data[,numeric.columns])
   ## Plot!
   snake <- function(y, r=0.2, S=51){ # Smooth sinusoidal transitions between points
@@ -116,13 +119,12 @@ panel.plotbraids <- function(x, y, subscripts, ..., formula, data, idvar, strati
     y.bot <- unlist(data[k,grep(paste(statevar,"[1-9]","bot",sep="."),names(data))])
     S.top <- snake(y.top)
     S.bot <- snake(y.bot)
-    state.1 <- paste(statevar,steps[1],sep=".")
-    color.key <- key(data[[state.1]])
+    color.key <- key(data[[color.by]])
     grid.polygon(x=c(S.top$t, rev(S.bot$t)),
                  y=c(S.top$y, rev(S.bot$y)),
                  default.units="native",
                  gp=gpar(col=rgb(0,0,0,alpha=0),
-                   fill=color.key[[data[k,state.1]]],
+                   fill=color.key[[data[k,color.by]]],
                    lwd=1))
   }
   ## Draw the lanes

@@ -33,17 +33,12 @@ predReg <- function(genReg, N, M=100, fit=NULL,
                     do.pred=function(df){
                       fit.call <- fit$call
                       fit.call$data <- quote(df)
-                      ## Regrettably, 'Predict' appears to require that
-                      ## its argument be in .GlobalEnv
-#                      predReg.fit <<- eval(fit.call)
-#                      predReg.fit$Design$limits['Adjust to', names(adjust.to)] <<- adjust.to
-                      eval(parse(text="predReg.fit <<- eval(fit.call)"))
-                      eval(parse(text=
-                                 "predReg.fit$Design$limits['Adjust to',names(adjust.to)]<<-adjust.to"))
-                      if(eval(parse(text="is(predReg.fit,'lrm')")))
-                        eval(parse(text="Predict(predReg.fit, fun=plogis)"))
+                      fit <- eval(fit.call)
+                      fit$Design$limits['Adjust to',names(adjust.to)] <- adjust.to
+                      if (is(fit,'lrm'))
+                        Predict(fit, fun=plogis)
                       else
-                        eval(parse(text="Predict(predReg.fit)"))
+                        Predict(fit)
                     },
                     ...){
   ## TODO: Consider the design issues highlighted in the discussion below:
@@ -64,8 +59,8 @@ predReg <- function(genReg, N, M=100, fit=NULL,
   ##       should be used here instead. Presently, this intelligence is required
   ##       of the 'genReg' function itself.
   df <- genReg(round(M*N/2), ...)
-#  assign(options()$datadist, datadist(df), envir=.GlobalEnv)
-  eval(parse(text=paste(options()$datadist, "<<- datadist(df)")))
+  options(datadist=datadist(df)) # rms expects a global dd
+  #assign(options()$datadist, datadist(df), .GlobalEnv) # rms expects a global dd
   ## We also generate in the local scope an appropriately-shaped rms:Predict object,
   ## which is used below as scaffolding on which the returned object is 'rigged up'.
   pred <- do.pred(df)

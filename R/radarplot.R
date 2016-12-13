@@ -78,9 +78,9 @@
 ##' @examples
 ##' library(rms)
 ##' df <- upData(mtcars,
-##'              cyl=factor(cyl,levels=2*(2:4),labels=paste(2*(2:4),"cyl", sep="-")),
-##'              am=factor(am,levels=0:1,labels=c("automatic","manual")),
-##'              gear=factor(gear,levels=3:5,labels=paste(3:5,"speed", sep="-")),
+##'              #cyl=factor(cyl,levels=2*(2:4),labels=paste(2*(2:4),"cyl", sep="-")),
+##'              #am=factor(am,levels=0:1,labels=c("automatic","manual")),
+##'              #gear=factor(gear,levels=3:5,labels=paste(3:5,"speed", sep="-")),
 ##'              labels=c(
 ##'                mpg="Miles per gallon"
 ##'                ,cyl="Number of cylinders"
@@ -100,6 +100,9 @@
 ##'                ),
 ##'              drop='vs'
 ##'              )
+##' df$cyl <- factor(df$cyl,levels=2*(2:4),labels=paste(2*(2:4),"cyl", sep="-"))
+##' df$am  <- factor(df$am,levels=0:1,labels=c("automatic","manual"))
+##' df$gear<- factor(df$gear,levels=3:5,labels=paste(3:5,"speed", sep="-"))
 ##' s <- summary(cbind(mpg, disp, hp, drat, wt) ~ cyl + gear + am,
 ##'              method='cross', overall=TRUE, data=df)
 ##' dd <- datadist(df)
